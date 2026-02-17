@@ -1,0 +1,577 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>SaveSmart — Money Saving Schemes</title>
+    <meta
+      name="description"
+      content="Compare PPF, RD, FD, NBFC and more with a sleek interface."
+    />
+
+    <!-- Font -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      :root {
+        /* Updated color palette: deeper teal & cyan hues */
+        --bg: linear-gradient(135deg, #0e1f33, #123449);
+        --panel: rgba(255, 255, 255, 0.08);
+        --panel-strong: rgba(255, 255, 255, 0.15);
+        --text: #e6f0f5;
+        --muted: #a0b0c0;
+        --brand-left: #16a085;
+        --brand-right: #1abc9c;
+        --ring: rgba(26, 188, 156, 0.4);
+        --shadow: 0 8px 24px rgba(0, 0, 0, 0.3), 0 2px 6px rgba(0, 0, 0, 0.2);
+        --radius: 16px;
+      }
+      .theme-light {
+        --bg: linear-gradient(135deg, #f0f5f9, #e2edf7);
+        --panel: rgba(255, 255, 255, 0.8);
+        --panel-strong: rgba(255, 255, 255, 0.95);
+        --text: #1a2a33;
+        --muted: #708090;
+        --ring: rgba(26, 188, 156, 0.25);
+        --shadow: 0 8px 24px rgba(0, 0, 0, 0.1), 0 2px 6px rgba(0, 0, 0, 0.05);
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      html {
+        scroll-behavior: smooth;
+      }
+      body {
+        font-family: "Inter", sans-serif;
+        background: var(--bg);
+        color: var(--text);
+        overflow-x: hidden;
+      }
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+      button,
+      .chip,
+      a.btn {
+        font: inherit;
+        cursor: pointer;
+        transition: all 0.2s ease;
+      }
+
+      /* Animated Gradient Orbs & Background */
+      .bg-wrap {
+        position: fixed;
+        inset: 0;
+        z-index: -1;
+        overflow: hidden;
+        background: var(--bg);
+      }
+      .orb {
+        position: absolute;
+        border-radius: 50%;
+        filter: blur(80px);
+        opacity: 0.3;
+        animation: float 25s ease-in-out infinite;
+      }
+      .orb.o1 {
+        width: 400px;
+        height: 400px;
+        top: -100px;
+        left: -150px;
+        background: rgba(22, 160, 133, 0.5);
+      }
+      .orb.o2 {
+        width: 500px;
+        height: 500px;
+        bottom: -200px;
+        right: -200px;
+        background: rgba(26, 188, 156, 0.5);
+        animation-delay: 8s;
+      }
+
+      @keyframes float {
+        0%,
+        100% {
+          transform: translateY(0) scale(1);
+        }
+        50% {
+          transform: translateY(-40px) scale(1.1);
+        }
+      }
+
+      .container {
+        max-width: 1100px;
+        margin: auto;
+        padding: 0 20px;
+      }
+
+      /* Navbar */
+      header {
+        position: sticky;
+        top: 0;
+        padding: 16px 0;
+        backdrop-filter: blur(8px);
+        background: var(--panel-strong);
+        box-shadow: var(--shadow);
+        z-index: 100;
+      }
+      .nav {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-weight: 800;
+        font-size: 1.5rem;
+        cursor: pointer;
+      }
+      .logo {
+        width: 42px;
+        height: 42px;
+        border-radius: 12px;
+        background: linear-gradient(
+          135deg,
+          var(--brand-left),
+          var(--brand-right)
+        );
+        box-shadow: 0 4px 12px rgba(26, 188, 156, 0.4);
+        position: relative;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 24px;
+      }
+      .logo::after {
+        content: "";
+        position: absolute;
+        inset: 2px;
+        border-radius: 10px;
+        background: linear-gradient(
+          135deg,
+          rgba(255, 255, 255, 0.2),
+          transparent
+        );
+      }
+      .brand-text {
+        background: linear-gradient(
+          135deg,
+          var(--brand-left),
+          var(--brand-right)
+        );
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+      }
+      .nav-actions {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+      }
+      .nav-actions .btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+      }
+
+      /* Buttons & Chips */
+      .btn,
+      .chip {
+        padding: 10px 18px;
+        border-radius: 999px;
+        border: 1px solid transparent;
+        background: var(--panel);
+        color: var(--text);
+        transition: all 0.3s ease;
+        box-shadow: var(--shadow);
+        display: inline-flex;
+        align-items: center;
+      }
+      .btn:hover,
+      .chip:hover {
+        transform: translateY(-2px) scale(1.03);
+        border-color: var(--ring);
+        box-shadow:
+          0 0 12px var(--brand-right),
+          var(--shadow);
+      }
+      .chip[aria-pressed="true"] {
+        background: rgba(26, 188, 156, 0.2);
+        border-color: var(--brand-right);
+      }
+
+      /* Hero */
+      .hero {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        align-items: center;
+        gap: 30px;
+        padding: 60px 0;
+      }
+      .hero-text h1 {
+        font-size: clamp(2rem, 4vw, 3rem);
+        animation: fadeDown 1s ease both;
+      }
+      .hero-text p {
+        margin: 20px 0;
+        color: var(--muted);
+        animation: fadeDown 1.2s ease both;
+      }
+      .hero-text .search-area {
+        display: flex;
+        gap: 12px;
+        margin-top: 20px;
+        animation: fadeUp 1.4s ease both;
+      }
+      .hero-text .input {
+        flex: 1;
+        padding: 14px;
+        border-radius: var(--radius);
+        border: none;
+        background: var(--panel);
+        box-shadow: var(--shadow);
+        color: var(--text);
+      }
+      .hero-img img {
+        width: 100%;
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+        animation: float 8s ease-in-out infinite;
+      }
+
+      /* Animations */
+      @keyframes fadeUp {
+        from {
+          opacity: 0;
+          transform: translateY(30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      @keyframes fadeDown {
+        from {
+          opacity: 0;
+          transform: translateY(-20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* Grid & Cards */
+      .section-title {
+        text-align: center;
+        font-size: 1.75rem;
+        margin: 40px 0 20px;
+        animation: fadeDown 1s ease both;
+      }
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 24px;
+        padding-bottom: 60px;
+      }
+      .card {
+        background: var(--panel);
+        border-radius: var(--radius);
+        padding: 20px;
+        box-shadow: var(--shadow);
+        opacity: 0;
+        transform: translateY(30px);
+        animation: fadeUp 0.8s ease both;
+      }
+      .card:hover {
+        transform: translateY(-8px) scale(1.02);
+      }
+
+      .bank {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 10px;
+      }
+      .bank-badge {
+        width: 80px;
+        height: 40px;
+        background: linear-gradient(
+          135deg,
+          var(--brand-left),
+          var(--brand-right)
+        );
+        color: #fff;
+        border-radius: 12px;
+        display: grid;
+        place-items: center;
+        font-weight: 600;
+      }
+      .category {
+        margin-left: auto;
+        background: rgba(255, 255, 255, 0.1);
+        padding: 4px 10px;
+        border-radius: 999px;
+        font-size: 0.8rem;
+        color: var(--muted);
+      }
+      .scheme-list a {
+        display: block;
+        margin-bottom: 6px;
+        color: var(--text);
+        text-decoration: underline;
+      }
+      .scheme-list a:hover {
+        color: var(--brand-right);
+      }
+      .all-schemes-btn {
+        margin-top: 12px;
+        display: inline-block;
+      }
+
+      /* Footer */
+      .footer {
+        text-align: center;
+        color: var(--muted);
+        margin: 60px 0;
+        animation: fadeUp 1s ease both;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="bg-wrap" aria-hidden="true">
+      <div class="orb o1"></div>
+      <div class="orb o2"></div>
+    </div>
+
+    <header>
+      <div class="container nav">
+        <div class="brand">
+          <div class="logo">💰</div>
+          <span class="brand-text">SaveSmart</span>
+        </div>
+        <div class="nav-actions">
+          <button id="themeBtn" class="btn">🌗 Toggle Theme</button>
+          <a href="#banks" class="btn">🏦 See All Banks</a>
+        </div>
+      </div>
+    </header>
+
+    <main class="container">
+      <section class="hero">
+        <div class="hero-text">
+          <h1>
+            Find the Best
+            <span
+              style="
+                background: linear-gradient(
+                  135deg,
+                  var(--brand-left),
+                  var(--brand-right)
+                );
+                -webkit-background-clip: text;
+                color: transparent;
+              "
+              >Money-Saving Schemes</span
+            >
+          </h1>
+          <p>
+            Explore PPF, RD, FD, APY, PMJJBY schemes across public, private
+            banks & NBFCs.
+          </p>
+          <div class="search-area">
+            <input
+              id="searchInput"
+              type="search"
+              class="input"
+              placeholder="Search by bank..."
+            />
+            <button id="clearBtn" class="btn">Clear</button>
+          </div>
+          <div class="filters" style="margin-top: 20px">
+            <button class="chip" data-filter="all" aria-pressed="true">
+              All
+            </button>
+            <button class="chip" data-filter="Public">Public</button>
+            <button class="chip" data-filter="Private">Private</button>
+            <button class="chip" data-filter="NBFC">NBFC</button>
+          </div>
+        </div>
+        <div class="hero-img">
+          <img
+            src="https://www.advocate.com/sites/default/files/shutterstock_2056177070.jpg"
+            alt="Savings Illustration"
+          />
+        </div>
+      </section>
+
+      <h2 id="banks" class="section-title">Banks & Providers</h2>
+      <div id="grid" class="grid"></div>
+      <div
+        id="emptyState"
+        style="text-align: center; color: var(--muted)"
+        hidden
+      >
+        No banks match your search.
+      </div>
+
+      <div class="footer">
+        Built with ❤️ for smart savers. Please verify details on official
+        websites.
+      </div>
+    </main>
+
+    <script>
+      const BANKS = [
+        {
+          name: "State Bank of India (SBI)",
+          short: "SBI",
+          category: "Public",
+          schemes: [
+            { label: "PPF", url: "https://sbi.co.in/.../ppf" },
+            { label: "RD/FD", url: "https://sbi.co.in/.../fd" },
+          ],
+          page: "sbi.html",
+        },
+        {
+          name: "HDFC Bank",
+          short: "HDFC",
+          category: "Private",
+          schemes: [
+            { label: "FD Rates", url: "https://www.hdfcbank.com/rates" },
+          ],
+          page: "hdfc.html",
+        },
+        {
+          name: "ICICI Bank",
+          short: "ICICI",
+          category: "Private",
+          schemes: [{ label: "FD", url: "https://www.icicibank.com/fd" }],
+          page: "icici.html",
+        },
+        {
+          name: "Axis Bank",
+          short: "Axis",
+          category: "Private",
+          schemes: [
+            { label: "Deposits", url: "https://www.axisbank.com/deposits" },
+          ],
+          page: "axis.html",
+        },
+        {
+          name: "YES Bank",
+          short: "YES",
+          category: "Private",
+          schemes: [{ label: "APY", url: "https://www.yesbank.in/apy" }],
+          page: "yes.html",
+        },
+        {
+          name: "Canara Bank",
+          short: "Canara",
+          category: "Public",
+          schemes: [
+            { label: "Term Deposit", url: "https://canarabank.com/td" },
+          ],
+          page: "canara.html",
+        },
+        {
+          name: "Bank of Baroda",
+          short: "BoB",
+          category: "Public",
+          schemes: [{ label: "FD", url: "https://www.bankofbaroda.in/fd" }],
+          page: "bob.html",
+        },
+      ];
+
+      const grid = document.getElementById("grid");
+      const emptyState = document.getElementById("emptyState");
+      const searchInput = document.getElementById("searchInput");
+      const clearBtn = document.getElementById("clearBtn");
+      const filterChips = document.querySelectorAll(".chip[data-filter]");
+
+      function makeCard(bank) {
+        const el = document.createElement("div");
+        el.className = "card";
+        el.innerHTML = `
+        <div class="bank">
+          <div class="bank-badge">${bank.short}</div>
+          <div><strong>${bank.name}</strong></div>
+          <div class="category">${bank.category}</div>
+        </div>
+        <div class="scheme-list">
+          ${bank.schemes.map((s) => `<a href="${s.url}" target="_blank">• ${s.label}</a>`).join("")}
+        </div>
+        ${bank.page ? `<a href="${bank.page}" class="btn all-schemes-btn">📑 See all schemes</a>` : ""}
+      `;
+        return el;
+      }
+
+      function render(list = BANKS) {
+        grid.innerHTML = "";
+        list.forEach((b, i) => {
+          const card = makeCard(b);
+          card.style.animationDelay = `${i * 0.1}s`;
+          grid.appendChild(card);
+        });
+        emptyState.hidden = list.length > 0;
+      }
+
+      function applyFilters() {
+        const q = searchInput.value.trim().toLowerCase();
+        const filtered = BANKS.filter(
+          (b) =>
+            (b.category === currentFilter || currentFilter === "all") &&
+            (q === "" ||
+              b.name.toLowerCase().includes(q) ||
+              b.short.toLowerCase().includes(q)),
+        );
+        render(filtered);
+      }
+
+      let currentFilter = "all";
+      searchInput.addEventListener("input", applyFilters);
+      clearBtn.addEventListener("click", () => {
+        searchInput.value = "";
+        applyFilters();
+      });
+      filterChips.forEach((chip) => {
+        chip.addEventListener("click", () => {
+          currentFilter = chip.dataset.filter;
+          filterChips.forEach((c) =>
+            c.setAttribute("aria-pressed", c === chip),
+          );
+          applyFilters();
+        });
+      });
+
+      // Theme toggle
+      const themeBtn = document.getElementById("themeBtn");
+      const THEME_KEY = "savesmart-theme";
+      function setTheme(t) {
+        if (t === "light")
+          document.documentElement.classList.add("theme-light");
+        else document.documentElement.classList.remove("theme-light");
+        localStorage.setItem(THEME_KEY, t);
+      }
+      setTheme(localStorage.getItem(THEME_KEY) || "dark");
+      themeBtn.addEventListener("click", () =>
+        setTheme(
+          document.documentElement.classList.contains("theme-light")
+            ? "dark"
+            : "light",
+        ),
+      );
+
+      render();
+    </script>
+  </body>
+</html>

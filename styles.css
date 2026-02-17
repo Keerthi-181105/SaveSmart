@@ -1,0 +1,98 @@
+/* General Styles */
+body {
+    font-family: 'Segoe UI', sans-serif;
+    background-color: white;
+    margin: 0;
+    padding: 0;
+}
+
+/* Header */
+header {
+    background-color: #2a4d9b;
+    color: white;
+    padding: 20px 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.logo-image {
+    width: 60px;
+    height: auto;
+    margin-right: 15px;
+}
+
+header h1 {
+    font-size: 2rem;
+}
+
+nav {
+    background-color: #e6e6e6;
+    padding: 12px;
+    text-align: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+nav a {
+    margin: 0 15px;
+    text-decoration: none;
+    color: #2a4d9b;
+    font-weight: bold;
+    font-size: 16px;
+}
+
+/* Sections */
+h2 {
+    margin-top: 30px;
+    margin-bottom: 20px;
+    color: #1e3d8f;
+}
+
+.card {
+    background-color: white;
+    border-radius: 10px;
+    border: 1px solid #ddd;
+    padding: 30px;
+    transition: transform 0.3s ease;
+}
+
+.card:hover {
+    transform: scale(1.02);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.card a {
+    color: #0066cc;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+footer {
+    background-color: #2a4d9b;
+    color: white;
+    text-align: center;
+    padding: 15px;
+    margin-top: 40px;
+}
+
+/* Search Bar */
+#searchBar {
+    width: 100%;
+    max-width: 500px;
+    margin: 20px auto;
+    padding: 10px 15px;
+    font-size: 16px;
+    border: 2px solid #2a4d9b;
+    border-radius: 8px;
+    display: block;
+}
+#bg-color{
+     background-color: rgb(255, 255, 255)
+}
+
+.scheme-button{
+    width: 160px;
+}
+.interest-button {
+    
+    width: 180px;
+
+}

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>SaveSmart — Interest Rates</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .filter-bar { display:flex; gap:1rem; margin:1rem 0; flex-wrap:wrap; }
+    .card table { width:100%; border-collapse: collapse; }
+    .card table th, .card table td { padding:8px; border-bottom:1px solid #ddd; text-align:left; }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container nav">
+      <a class="brand" href="index.html"><div class="logo"></div><span>SaveSmart</span></a>
+      <div class="nav-actions"><button id="themeBtn" class="btn">🌗 Theme</button></div>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="hero reveal">
+      <h1>Bank Interest Rates</h1>
+      <p>Compare latest FD, RD, and Savings account interest rates across banks.</p>
+    </section>
+
+    <div class="filter-bar">
+      <select id="filterRate">
+        <option value="all">All</option>
+        <option value="above7">FD Above 7%</option>
+        <option value="below6">FD Below 6%</option>
+      </select>
+    </div>
+
+    <div class="grid" id="interestGrid"></div>
+  </main>
+
+  <script>
+  const INTERESTS = [
+    { bank:"SBI", fd:6.5, rd:6.25, savings:3.0 },
+    { bank:"HDFC", fd:7.25, rd:7.0, savings:3.5 },
+    { bank:"ICICI", fd:7.1, rd:6.8, savings:3.5 },
+    { bank:"Bank of Baroda", fd:7.4, rd:7.0, savings:3.25 },
+    { bank:"Axis Bank", fd:6.75, rd:6.5, savings:3.0 }
+  ];
+
+  const grid = document.getElementById("interestGrid");
+  const render = (list) => {
+    grid.innerHTML = "";
+    list.forEach(i=>{
+      const el=document.createElement("article");
+      el.className="card reveal";
+      el.innerHTML=`
+        <div class="bank"><div class="bank-badge">INT</div><div style="font-weight:700">${i.bank}</div></div>
+        <table>
+          <tr><th>FD</th><td>${i.fd}%</td></tr>
+          <tr><th>RD</th><td>${i.rd}%</td></tr>
+          <tr><th>Savings</th><td>${i.savings}%</td></tr>
+        </table>
+      `;
+      grid.appendChild(el);
+    });
+  };
+  render(INTERESTS);
+
+  document.getElementById("filterRate").addEventListener("change", e=>{
+    const v=e.target.value;
+    if(v==="above7") render(INTERESTS.filter(i=>i.fd>7));
+    else if(v==="below6") render(INTERESTS.filter(i=>i.fd<6));
+    else render(INTERESTS);
+  });
+  </script>
+</body>
+</html>
