@@ -1,3 +1,8 @@
+# SaveSmart 💰
+
+## 🌐 Live Demo
+👉 https://keerthi-181105.github.io/SaveSmart/
+
 SaveSmart
 
 SaveSmart is a modern web application that aggregates money-saving schemes and investment options from major Indian banks, making it easy to discover and compare financial products in one place.
